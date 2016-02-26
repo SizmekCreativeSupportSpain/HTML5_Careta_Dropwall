@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/> 
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/> 
+		<title>Careta Panel Usuario</title>
+        <link rel="stylesheet" href="style.css"/>
+        <script>EBModulesToLoad = ['Video', 'EBCMD'];</script>
+        <script type="text/javascript" src="../adConfig.js"></script>
+        <script type="text/javascript" src="../js/EBLoader.js"></script>
+        <style>
+			#screenshot{
+				background-image: url('http://www.sizmek.es/eb/users/javiegido_/__Screenshots/elmundo.jpg');
+			}
+        </style>
+		<script>
+			var video,clickBtn;
+			
+			function startAd() {
+				var panel = document.getElementById("expansion");
+				var screenshot = document.getElementById("screenshot");
+
+				panel.style.width = adConfig.panel_usuario_width+"px";
+				panel.style.height = adConfig.panel_usuario_height+"px";
+
+				screenshot.style.width = adConfig.panel_automatico_width+"px";
+				screenshot.style.height = adConfig.panel_automatico_height+"px";
+
+				EB.initExpansionParams(0,0,adConfig.panel_automatico_width,adConfig.panel_automatico_height);
+				
+				document.getElementById("closeButton").onclick=function(){
+					screenshot.classList.toggle("caido");
+					screenshot.classList.toggle("enpie");
+					setTimeout(function(){
+						EB.collapse({panelName: "userPanel",
+				                actionType: EBG.ActionType.USER});
+					},500);
+				}
+
+				clickBtn = document.getElementById("clickthroughButton");
+				clickBtn.addEventListener('click',function(){
+					EB.clickthrough("click_panelUsuario");
+				})
+
+				if (is_touch_device() === false) {
+					clickBtn.addEventListener("mouseout", isReallyOutBanner);
+				}
+
+				initVideo();
+
+				setTimeout(function(){
+					screenshot.classList.toggle("caido");
+				},500);
+			}
+
+			function isReallyOutBanner(event){
+				if(event.clientX>=adConfig.panel_usuario_width || event.clientX<=0 || event.clientY>=adConfig.panel_usuario_height || event.clientY<=0){
+					EB.collapse({panelName: "userPanel",
+				                actionType: EBG.ActionType.USER});
+			    }
+			}
+
+			function initVideo(){
+				video = document.getElementById("video");
+				var videoTrackingModule = new EBG.VideoModule(video);
+				videoTrackingModule.playVideo("auto");
+			}
+			
+		</script>
+	</head>
+	<body>
+		<div id="expansion">
+			<button id="closeButton" class="button">X | CERRAR</button>
+			<button id="clickthroughButton" class="button"></button>
+			<div id="screenshot" class="centered"></div>
+			<img src="images/panelUser.png" alt="bgPanelUser" class="centered" />
+			<div id="videoContainer" class="video-container centered">
+				<video id="video" controls muted poster="images/poster.jpg">
+					<source src="videos/video.mp4" type="video/mp4">
+					<source src="videos/video.webm" type="video/webm">
+					Tu explorador no soporta video.
+				</video>
+			</div>
+		</div>
+	</body>
+</html>
+

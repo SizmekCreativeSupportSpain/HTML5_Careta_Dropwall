@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/> 
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/> 
+		<title>Careta Panel Automático</title>
+        <link rel="stylesheet" href="style.css"/>
+        <script type="text/javascript" src="../adConfig.js"></script>
+        <script type="text/javascript" src="../js/EBLoader.js"></script>
+        <style>
+        	/*Sustituir por imagen dinamica del soporte( solicitar URL a sizmek ) */
+			#screenshot{
+				background-image: url('http://www.sizmek.es/eb/users/javiegido_/__Screenshots/elmundo.jpg');
+			}
+        </style>
+		<script>
+			var clickBtn;
+			
+			function startAd() {
+				var panel = document.getElementById("expansion");
+				var screenshot = document.getElementById("screenshot");
+
+				panel.style.width = adConfig.panel_automatico_width+"px";
+				panel.style.height = adConfig.panel_automatico_height+"px";
+
+				screenshot.style.width = adConfig.panel_automatico_width+"px";
+				screenshot.style.height = adConfig.panel_automatico_height+"px";
+
+				EB.initExpansionParams(0,0,adConfig.panel_automatico_width,adConfig.panel_automatico_height);
+				
+				clickBtn = document.getElementById("clickthroughButton");
+
+				clickBtn.addEventListener('click',function(){
+					EB.clickthrough("click_panelAutomatico");
+				});
+
+				document.getElementById("closeButton").onclick = function(){
+					screenshot.classList.toggle("caido");
+					screenshot.classList.toggle("enpie");
+					setTimeout(function(){
+						EB.collapse({panelName: "autoPanel",
+				                actionType: EBG.ActionType.USER});
+					},500);
+					
+				}
+				if (is_touch_device() === false) {
+					clickBtn.addEventListener("mouseout", isReallyOutBanner);
+				}
+				setTimeout(function(){
+					screenshot.classList.toggle("caido");
+				},500);
+				
+			}
+
+			function isReallyOutBanner(event){
+				if(event.clientX>=adConfig.panel_automatico_width || event.clientX<=0 || event.clientY>=adConfig.panel_automatico_height || event.clientY<=0){
+					EB.collapse({panelName: "autoPanel",
+				                actionType: EBG.ActionType.USER});
+			    }
+			}	
+			
+			setTimeout(function(){
+				EB.collapse({panelName: "autoPanel",
+                   			actionType: EBG.ActionType.USER});
+				},adConfig.auto_cierre );
+			
+		</script>
+	</head>
+	<body>
+		<div id="expansion">
+			<button id="closeButton" class="button">X | CERRAR</button>
+			<button id="clickthroughButton" class="button"></button>
+			<div id="screenshot" class="centered"></div>
+			<img src="images/panelAuto.png" alt="bgPanelAuto" class="centered" />
+		</div>
+	</body>
+</html>
+
