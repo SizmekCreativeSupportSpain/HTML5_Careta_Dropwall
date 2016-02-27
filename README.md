@@ -2,6 +2,9 @@
 
 Plantilla genérica con todo lo necesario para crear formatos tipo careta con efecto Dropwall utilizando workspaces de Sizmek.
 
+<a href="http://www.sizmek.es/eb/users/javiegido_/__TESTS/DEMO_Careta_Dropwall.html" target="_blank"><img src="http://www.sizmek.es/eb/users/javiegido_/__Screenshots/verDemo.png" alt="Ver Demo" width="165" height="44" /></a>
+
+
 ## Descripción
 
 La plantilla para montar una careta con efecto DROPWALL consta de tres ficheros html, uno para la zona contraida y otro para cada uno de los paneles. El panel automático, por norma general, debe ser un panel de poco peso y no puede llevar vídeo. Este panel se cerrará de forma automática pasados unos segundos.
@@ -15,7 +18,7 @@ Para cambiar el tamaño de los elementos del formato, el tiempo de delay para la
 
 ```javascript
 var adConfig = {
-    "contraido_width": "980",
+    "contraido_width": "990",
     "contraido_height": "90",
     "panel_automatico_width": "1029",
     "panel_automatico_height": "1000",
