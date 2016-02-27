@@ -2,7 +2,7 @@
 
 Plantilla genérica con todo lo necesario para crear formatos tipo careta con efecto Dropwall utilizando workspaces de Sizmek.
 
-<a href="http://www.sizmek.es/eb/users/javiegido_/__TESTS/DEMO_Careta_Dropwall.html" target="_blank"><img src="http://www.sizmek.es/eb/users/javiegido_/__Screenshots/verDemo.png" alt="Ver Demo" width="165" height="44" /></a>
+<a href="http://www.sizmek.es/eb/users/javiegido_/__Demos/DEMO_Careta_Dropwall.html" target="_blank"><img src="http://www.sizmek.es/eb/users/javiegido_/__Screenshots/verDemo.png" alt="Ver Demo" width="165" height="44" /></a>
 
 
 ## Descripción
