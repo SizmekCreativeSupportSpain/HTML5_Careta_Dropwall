@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/> 
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/> 
+ 		<title>Careta Workspaces</title>
+        <link rel="stylesheet" href="style.css"/>
+        <script type="text/javascript" src="adConfig.js"></script>
+        <script type="text/javascript" src="js/EBLoader.js"></script>
+        <script type="text/javascript" src="js/frequency.js"></script>
+        
+        <script>
+        	var expandBtn, delayTimeout = null;
+
+			function startAd() {
+				
+				var banner = document.getElementById("banner");
+				banner.style.width = adConfig.contraido_width+"px";
+				banner.style.height = adConfig.contraido_height+"px";
+				
+				expandBtn = document.getElementById("expandBtn");
+				if (is_touch_device() === false) {
+					banner.addEventListener("mouseenter", onMouseOverConfig);
+					expandBtn.addEventListener("click", function(){
+					    EB.clickthrough("click_BannerContraido");
+					});
+				}else{
+					expandBtn.addEventListener("click", function(){
+						EB.expand({panelName: "userPanel",
+							      actionType: EBG.ActionType.USER});
+					});
+				}
+				
+				setTimeout(function(){// prepare frequency capping
+					try{
+						if((EB.browserSupports("localStorage") || (adConfig.frequencyCapping == EB.autoExpandFrequencyCapping.Frequencies.SESSION && EB.browserSupports("sessionStorage"))) && adConfig.hasOwnProperty("frequencyCapping")){
+							if(adConfig.frequencyCapping.toUpperCase() == "UNLIMITED"){
+								autoExpand();
+							}else{
+								setUpAutoExpandFrequencyCapping();
+							}
+						}else{
+							autoExpand();
+						}
+					}catch(err){
+						console.log("Error seteando frecuencia: "+err);
+					}
+				},100);
+				
+
+
+			}
+
+			function onMouseOverConfig(event){
+				expandBtn.addEventListener("mouseleave",isReallyOutBanner);
+				if(delayTimeout === null){
+					delayTimeout = setTimeout(function(){
+						EB.expand({panelName: "userPanel",
+				                  actionType: EBG.ActionType.USER});
+						resetTimeout();
+					},adConfig.delay_expansion);
+				}
+			}
+			function isReallyOutBanner(event){
+				if(event.clientX>=adConfig.contraido_width || event.clientX<=0 || event.clientY>=adConfig.contraido_height || event.clientY<=0){
+			        resetTimeout();
+			    	expandBtn.removeEventListener("mouseleave",isReallyOutBanner);
+			    }
+			}
+			function resetTimeout(){
+				clearTimeout(delayTimeout);
+				delayTimeout = null;
+			}
+
+			function setUpAutoExpandFrequencyCapping() {
+				var autoExpandSettings = {
+					isEnabled: true,
+					frequency: EB.autoExpandFrequencyCapping.Frequencies[adConfig.frequencyCapping.toUpperCase()],
+					expansionsPerPeriod: 1
+				};
+
+				var beforeAutoExpandSubscription = new EB.autoExpandFrequencyCapping.EventSubscription({
+					eventName: EB.autoExpandFrequencyCapping.Events.AUTO_EXPAND, 
+					callback: autoExpand, 
+					callbackBinding: this, 
+					timing: EB.autoExpandFrequencyCapping.EventTiming.BEFORE
+				});
+				EB.autoExpandFrequencyCapping.subscribeToEvent(beforeAutoExpandSubscription);
+				EB.autoExpandFrequencyCapping.initialize(autoExpandSettings);
+			}
+
+			function autoExpand(){
+				setTimeout(function(){
+					EB.expand({panelName: "autoPanel",
+				                  actionType: EBG.ActionType.AUTO});
+				}, 500);
+				
+			}
+        </script>
+	</head>
+
+	<body>
+        <div id="banner">
+        	<button id="expandBtn"></button>
+            <img src="images/backup.jpg" alt="bgImage" />
+        </div>
+	</body>
+</html>
+
